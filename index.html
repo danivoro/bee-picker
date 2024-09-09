@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Bee Picker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .person-list {
+        margin-bottom: 20px;
+      }
+      .person {
+        margin: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .person input {
+        margin-left: 10px;
+      }
+      .button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .button:hover {
+        background-color: #0056b3;
+      }
+      .button:disabled {
+        background-color: #ccc;
+      }
+      .result {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+        opacity: 0;
+        transition: opacity 1s;
+      }
+      .spin {
+        animation: spin 1s forwards;
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>The 🐝 Picker</h1>
+      <div class="person-list">
+        <div class="person">
+          <span>Pere</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Dani V</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Pawel</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Andrzej</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Dani N</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Maciej</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Evgeni</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Luis</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Diego</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+        <div class="person">
+          <span>Kyrylo</span>
+          <input type="checkbox" class="toggle-person" checked />
+        </div>
+      </div>
+      <button class="button" id="pickPersonButton">Pick</button>
+      <h2 class="result" id="result"></h2>
+    </div>
+    <script>
+      const names = [
+        "Pere",
+        "Dani V",
+        "Pawel",
+        "Andrzej",
+        "Dani N",
+        "Maciej",
+        "Evgeni",
+        "Luis",
+        "Diego",
+        "Kyrylo",
+      ];
+
+      const checkboxes = document.querySelectorAll(".toggle-person");
+      const resultElement = document.getElementById("result");
+      const pickPersonButton = document.getElementById("pickPersonButton");
+
+      function getCheckedNames() {
+        return Array.from(checkboxes)
+          .map((checkbox, index) => (checkbox.checked ? names[index] : null))
+          .filter((name) => name !== null);
+      }
+
+      function pickRandomPerson() {
+        const availableNames = getCheckedNames();
+        if (availableNames.length === 0) {
+          resultElement.textContent = "No one is available to pick.";
+          resultElement.style.opacity = 1; // Ensure it's visible if no names are picked
+          return;
+        }
+        // Add the spin animation class
+        resultElement.classList.add("spin");
+        // Remove the class after animation is complete to reset
+        setTimeout(() => resultElement.classList.remove("spin"), 1000);
+
+        const jsConfetti = new JSConfetti();
+        jsConfetti.addConfetti();
+
+        const randomIndex = Math.floor(Math.random() * availableNames.length);
+        resultElement.textContent = `Selected bee: ${availableNames[randomIndex]}`;
+        resultElement.style.opacity = 1;
+      }
+
+      pickPersonButton.addEventListener("click", pickRandomPerson);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+  </body>
+</html>
